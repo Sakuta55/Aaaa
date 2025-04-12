@@ -1,0 +1,10 @@
+{
+  "1": {
+    "اجباري": false,
+    "لينك": "https://example.com/update1"
+  },
+  "5": {
+    "اجباري": true,
+    "لينك": "https://example.com/update5"
+  }
+}
