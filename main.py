@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import data_store
 
@@ -10,7 +10,7 @@ templates = Jinja2Templates(directory="templates")
 async def read_editor(request: Request):
     return templates.TemplateResponse("editor.html", {"request": request, "data": data_store.data})
 
-@app.post("/update", response_class=RedirectResponse)
+@app.post("/update", response_class=HTMLResponse)
 async def update_version(
     request: Request,
     version: str = Form(...),
@@ -23,7 +23,7 @@ async def update_version(
         "اجباري": True if اجباري == "true" else False,
         "اللينك": اللينك
     }
-    return RedirectResponse(url="/", status_code=303)
+    return templates.TemplateResponse("editor.html", {"request": request, "data": data_store.data, "message": "تم الحفظ بنجاح!"})
 
 @app.get("/check_version/{version}")
 async def check_version(version: str):
