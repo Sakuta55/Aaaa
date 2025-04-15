@@ -1,9 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-# البيانات مخزنة مباشرة داخل الكود
+# تفعيل CORS للسماح بالوصول من أي مكان (تقدر تحدد دومين معين لاحقًا)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # يمكنك استبداله بـ ["https://example.com"] للحد من الوصول
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# البيانات المخزنة داخل الكود
 data = {
     "1": {
         "اجباري": False,
