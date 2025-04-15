@@ -16,7 +16,7 @@ app.add_middleware(
 # البيانات المخزنة داخل الكود
 data = {
     "1": {
-        "اجباري": False,
+        "اجباري":True,
         "اللينك": "https://example.com/update1"
     },
     "2": {
