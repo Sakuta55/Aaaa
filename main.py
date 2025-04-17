@@ -1,43 +1,57 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-# تفعيل CORS للسماح بالوصول من أي مكان (تقدر تحدد دومين معين لاحقًا)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # يمكنك استبداله بـ ["https://example.com"] للحد من الوصول
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# البيانات المخزنة داخل الكود
+# قاعدة البيانات تشمل عدة ألعاب وكل لعبة تحتوي على إصداراتها
 data = {
-    "1": {
-        "اجباري":True,
-        "اللينك": "https://example.com/update1"
+    "carx": {
+        "1": {
+            "اجباري": False,
+            "اللينك": "https://example.com/carx/update1"
+        },
+        "2": {
+            "اجباري": True,
+            "اللينك": "https://example.com/carx/update2"
+        }
     },
-    "2": {
-        "اجباري": True,
-        "اللينك": "https://example.com/update2"
+    "driftmax": {
+        "1": {
+            "اجباري": False,
+            "اللينك": "https://example.com/driftmax/update1"
+        },
+        "3": {
+            "اجباري": True,
+            "اللينك": "https://example.com/driftmax/update3"
+        }
     },
-    "5": {
-        "اجباري": True,
-        "اللينك": "https://example.com/update5"
+    "adventurer": {
+        "1": {
+            "اجباري": False,
+            "اللينك": "https://example.com/adventurer/update1"
+        },
+        "5": {
+            "اجباري": True,
+            "اللينك": "https://example.com/adventurer/update5"
+        }
     }
 }
 
-@app.get("/check_version/{version}")
-async def check_version(version: str):
-    if version in data:
-        return {
-            "status": "ok",
-            "data": data[version]
-        }
+@app.get("/check_version/{game}/{version}")
+async def check_version(game: str, version: str):
+    if game in data:
+        game_data = data[game]
+        if version in game_data:
+            return {
+                "status": "ok",
+                "data": game_data[version]
+            }
+        else:
+            return {
+                "status": "error",
+                "message": "الإصدار غير موجود"
+            }
     else:
         return {
             "status": "error",
-            "message": "الإصدار غير موجود"
+            "message": "اللعبة غير موجودة"
         }
